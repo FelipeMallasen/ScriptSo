@@ -6,9 +6,12 @@ import com.github.britooo.looca.api.group.processos.Processo;
 import com.github.britooo.looca.api.group.processos.ProcessosGroup;
 import java.util.Date;
 import java.util.List;
+import mensageria.ConexaoSlack;
 
 public class ApiInsercao {
-
+        
+    ConexaoSlack conexao = new ConexaoSlack();
+    
     public  void memoria(){
         Insercao insercao = new Insercao();
         Looca looca= new Looca();
@@ -60,7 +63,16 @@ public class ApiInsercao {
                 dimensionDAO.inserirMysqlBD(insercao);
             }
             else{ }
+            
+        }
+        
+        for (Processo processo : processos) {
+            if (processo.getUsoCpu() > 95.0 || processo.getUsoMemoria() > 85.0) {
+                conexao.mensagem(processo);
+            }
 
-    }}
-
+        }
+    }
+    
+    
 }
